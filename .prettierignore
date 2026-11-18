@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+**/dist
+coverage
+node_modules
+.codebase-memory
+.vitest
+.pnpm-store

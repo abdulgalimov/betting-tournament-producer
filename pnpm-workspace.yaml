@@ -1,0 +1,17 @@
+# pnpm configuration for this standalone application; no workspace packages.
+allowBuilds:
+  esbuild: true
+  '@scarf/scarf': false
+verifyDepsBeforeRun: false
+saveExact: true
+strictPeerDependencies: true
+autoInstallPeers: false
+minimumReleaseAgeExclude:
+  - '@vitest/mocker@5.1.1'
+  - '@vitest/spy@5.1.1'
+  - vitest@5.1.1
+
+# openapi-typescript 7.13.0 generation is tested with the project's pinned TS 6.
+peerDependencyRules:
+  allowedVersions:
+    'openapi-typescript@7.13.0>typescript': '6.0.3'

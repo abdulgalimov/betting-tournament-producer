@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+.idea/
+.DS_Store
+*.log
+.codebase-memory/
+.pnpm-store/
+.vitest/

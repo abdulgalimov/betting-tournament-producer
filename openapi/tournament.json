@@ -1,0 +1,116 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Betting Tournament API",
+    "version": "1.0.0",
+    "description": "One perpetual tournament. Points are decimal USD strings. X-Player-Id is a test identity, not authentication.",
+    "contact": {}
+  },
+  "paths": {
+    "/leaderboard": {
+      "get": {
+        "operationId": "AppController_leaderboard",
+        "parameters": [
+          {
+            "name": "X-Player-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "top": {
+                      "maxItems": 100,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "playerId": {
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                            "description": "1–128 ASCII characters: letters, digits, dot, underscore, colon or hyphen"
+                          },
+                          "points": {
+                            "type": "string",
+                            "pattern": "^(0|[1-9]\\d*)(\\.\\d{1,12})?$"
+                          },
+                          "position": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "exclusiveMinimum": true,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": ["playerId", "points", "position"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "player": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "playerId": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                          "description": "1–128 ASCII characters: letters, digits, dot, underscore, colon or hyphen"
+                        },
+                        "points": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9]\\d*)(\\.\\d{1,12})?$"
+                        },
+                        "position": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "exclusiveMinimum": true,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": ["playerId", "points", "position"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["top", "player"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": { "description": "Missing or invalid X-Player-Id" }
+        },
+        "summary": "Top 100 and the current player position (one consistent snapshot)",
+        "tags": ["tournament"]
+      }
+    },
+    "/health/live": {
+      "get": {
+        "operationId": "AppController_live",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "summary": "Process liveness",
+        "tags": ["tournament"]
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "operationId": "AppController_ready",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "summary": "PostgreSQL and RabbitMQ readiness",
+        "tags": ["tournament"]
+      }
+    }
+  },
+  "tags": [],
+  "servers": [],
+  "components": { "schemas": {} }
+}
