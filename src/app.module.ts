@@ -8,12 +8,13 @@ import {
   DuplicateSettledDemoController,
   EventPublicationController,
   HealthController,
+  LoadTestController,
   RollbackBeforeSettledDemoController,
   RollbackTieBreakDemoController,
   TieBreakDemoController,
 } from './controllers';
 
-import { PublisherService } from './services';
+import { LoadTestService, PublisherService } from './services';
 
 @Module({
   imports: [
@@ -56,8 +57,9 @@ import { PublisherService } from './services';
     RollbackTieBreakDemoController,
     RollbackBeforeSettledDemoController,
     DuplicateSettledDemoController,
+    LoadTestController,
     HealthController,
   ],
-  providers: [PublisherService],
+  providers: [PublisherService, LoadTestService],
 })
 export class AppModule {}

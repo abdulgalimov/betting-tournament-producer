@@ -123,7 +123,11 @@ export class PublisherService implements OnModuleInit, OnModuleDestroy {
     this.channelRecoveryTimer = undefined;
   }
 
-  async publish(eventType: EventKind, event: BetEvent): Promise<void> {
+  async publish(
+    eventType: EventKind,
+    event: BetEvent,
+    options: { logSuccess?: boolean } = {},
+  ): Promise<void> {
     const channel = this.channel;
     if (!channel || !this.isReady() || this.inFlight >= 256) {
       throw new ServiceUnavailableException(
@@ -149,10 +153,12 @@ export class PublisherService implements OnModuleInit, OnModuleDestroy {
       // RabbitMQ returns an unroutable mandatory message before issuing its publisher confirm.
       if (this.returnedMessages.get(messageId))
         throw new Error('Unroutable event');
-      this.logger.info(
-        { betId: event.betId, eventType, messageId },
-        'Event confirmed by RabbitMQ',
-      );
+      if (options.logSuccess !== false) {
+        this.logger.info(
+          { betId: event.betId, eventType, messageId },
+          'Event confirmed by RabbitMQ',
+        );
+      }
     } catch {
       this.logger.warn(
         { betId: event.betId, eventType, messageId },

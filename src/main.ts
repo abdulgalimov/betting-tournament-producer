@@ -17,7 +17,7 @@ async function bootstrap(): Promise<void> {
       new DocumentBuilder()
         .setTitle('Tournament test producer')
         .setDescription(
-          'Publish validated AMQP events. A 202 response means publisher confirmation, not leaderboard completion. This application is a local test utility without authentication.',
+          'Publish validated AMQP events. Event endpoints return 202 after RabbitMQ confirms publication. Background load tests return 202 when accepted. This application is a local test utility without authentication.',
         )
         .setVersion('1.0.0')
         .build(),

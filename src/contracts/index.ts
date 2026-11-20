@@ -14,6 +14,8 @@ export type { DuplicateSettledDemoResponse } from './duplicate-settled-demo';
 export { PublishResponseSchema } from './event-publication';
 export type { PublishResponse } from './event-publication';
 export { HealthResponseSchema } from './health';
+export { LoadTestRequestSchema, LoadTestStatusSchema } from './load-test';
+export type { LoadTestRequest, LoadTestStatus } from './load-test';
 export {
   DemoPublishedEventSchema,
   RollbackBeforeSettledDemoResponseSchema,
