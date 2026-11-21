@@ -5,7 +5,9 @@ export const ProducerEnvironmentSchema = z.object({
   RABBITMQ_URL: z
     .url()
     .refine((value) => /^amqps?:\/\//.test(value), 'Use amqp:// or amqps://')
-    .default('amqp://tournament:tournament@localhost:5672'),
+    .default(
+      'amqp://tournament_producer:tournament_producer@localhost:5672/tournament',
+    ),
   PUBLISH_TIMEOUT_MS: z.coerce.number().int().min(100).max(30000).default(5000),
   LOG_LEVEL: z
     .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])

@@ -2,9 +2,9 @@ import { z } from 'zod';
 
 const LoadTestSettingsSchema = z.strictObject({
   durationSeconds: z.number().int().min(1).max(60),
-  messagesPerSecond: z.number().int().min(1).max(5000),
+  messagesPerSecond: z.number().int().min(1).max(20000),
   concurrency: z.number().int().min(1).max(128),
-  players: z.number().int().min(1).max(4096),
+  players: z.number().int().min(1).max(20000),
 });
 
 export const LoadTestRequestSchema = z.strictObject({

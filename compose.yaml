@@ -13,7 +13,7 @@ services:
     stop_grace_period: 30s
     environment:
       PORT: '3001'
-      RABBITMQ_URL: ${RABBITMQ_DOCKER_URL:-amqp://tournament:tournament@host.docker.internal:5672}
+      RABBITMQ_URL: ${RABBITMQ_DOCKER_URL:-amqp://tournament_producer:tournament_producer@host.docker.internal:5672/tournament}
       PUBLISH_TIMEOUT_MS: ${PUBLISH_TIMEOUT_MS:-5000}
       LOG_LEVEL: ${LOG_LEVEL:-info}
     extra_hosts: ['host.docker.internal:host-gateway']

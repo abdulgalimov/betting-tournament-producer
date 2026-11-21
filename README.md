@@ -114,20 +114,19 @@ cp .env.example .env
 docker compose up --build -d
 ```
 
-Compose запускает только producer. По умолчанию брокер доступен через `host.docker.internal:5672`; для Linux настроен `host-gateway`. Можно подключить любой внешний брокер через `RABBITMQ_DOCKER_URL`. Образ собирается с контекстом текущего каталога и не читает соседний проект. Не запускайте одновременно локальный producer и контейнер на порту 3001.
-
+Стенд турнира создаёт для producer отдельного пользователя `tournament_producer` во vhost `tournament` (команда `provision`): он объявляет топологию и публикует события, но не читает очереди. Compose запускает только producer. По умолчанию брокер доступен через `host.docker.internal:5672`; для Linux настроен `host-gateway`. Можно подключить любой внешний брокер через `RABBITMQ_DOCKER_URL`. Образ собирается с контекстом текущего каталога и не читает соседний проект. Не запускайте одновременно локальный producer и контейнер на порту 3001.
 
 ## Конфигурация
 
-| Переменная               | По умолчанию                                  | Назначение                                    |
-| ------------------------ | --------------------------------------------- | --------------------------------------------- |
-| `PORT`                   | `3001`                                        | HTTP-порт                                     |
-| `RABBITMQ_URL`           | `amqp://tournament:tournament@localhost:5672` | Брокер для локального процесса                |
-| `PUBLISH_TIMEOUT_MS`     | `5000`                                        | Ожидание publisher confirmation, 100–30000 мс |
-| `LOG_LEVEL`              | `info`                                        | Уровень Pino                                  |
-| `RABBITMQ_DOCKER_URL`    | адрес брокера через `host.docker.internal`    | URL брокера из Docker                         |
-| `TOURNAMENT_OPENAPI_URL` | `http://localhost:3000/openapi.json`          | Источник генерации клиента                    |
-| `TOURNAMENT_URL`         | `http://localhost:3000`                       | API турнира для CLI и E2E                     |
-| `PRODUCER_URL`           | `http://localhost:3001`                       | API producer для E2E                          |
+| Переменная               | По умолчанию                                                               | Назначение                                    |
+| ------------------------ | -------------------------------------------------------------------------- | --------------------------------------------- |
+| `PORT`                   | `3001`                                                                     | HTTP-порт                                     |
+| `RABBITMQ_URL`           | `amqp://tournament_producer:tournament_producer@localhost:5672/tournament` | Брокер для локального процесса                |
+| `PUBLISH_TIMEOUT_MS`     | `5000`                                                                     | Ожидание publisher confirmation, 100–30000 мс |
+| `LOG_LEVEL`              | `info`                                                                     | Уровень Pino                                  |
+| `RABBITMQ_DOCKER_URL`    | адрес брокера через `host.docker.internal`                                 | URL брокера из Docker                         |
+| `TOURNAMENT_OPENAPI_URL` | `http://localhost:3000/openapi.json`                                       | Источник генерации клиента                    |
+| `TOURNAMENT_URL`         | `http://localhost:3000`                                                    | API турнира для CLI и E2E                     |
+| `PRODUCER_URL`           | `http://localhost:3001`                                                    | API producer для E2E                          |
 
 Producer — локальная тестовая утилита без аутентификации. Не публикуйте её HTTP-порт в общедоступной сети. Пароли и строки подключения не должны попадать в логи.
